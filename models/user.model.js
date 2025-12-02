@@ -1,6 +1,6 @@
 import { pool } from '../config/db.js';
 
-const model = `CREATE TABLE IF NOT EXISTS users (
+const userModel = `CREATE TABLE IF NOT EXISTS users (
 	id SERIAL PRIMARY KEY,
 	username TEXT NOT NULL,
 	email TEXT NOT NULL UNIQUE,
@@ -11,8 +11,8 @@ const model = `CREATE TABLE IF NOT EXISTS users (
 );
 `
 
-const result = await pool.query(model)
+const usersTable = await pool.query(userModel)
 
 export {
-	result
+	usersTable
 }
