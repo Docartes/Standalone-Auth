@@ -19,8 +19,6 @@ class RegisterDTO {
 	}
 }
 
-const registerDTO = new RegisterDTO();
-
 export {
 	registerDTO
 }
