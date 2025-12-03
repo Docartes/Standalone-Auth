@@ -1,6 +1,6 @@
 class UserDTO {
 	constructor({ user, id, username, email, role, password }) {
-		this.id = user.userId
+		this.id = user.id
 		this.username = user.username
 		this.email = user.email
 		this.role = user.role

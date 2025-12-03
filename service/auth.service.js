@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt';
 import { pool as users } from '../models/user.model.js';
 import { pool as token } from '../models/token.model.js';
 import { TokenService } from './token.service.js';
-import { LoginDTO } from '../dtos/login.dto.js';
 import { RegisterDTO } from '../dtos/register.dto.js';
 import { TokenDTO } from '../dtos/token.dto.js';
 import { UserDTO } from '../dtos/user.dto.js';
