@@ -20,5 +20,5 @@ class RegisterDTO {
 }
 
 export {
-	registerDTO
+	RegisterDTO
 }

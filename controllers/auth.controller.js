@@ -1,5 +1,6 @@
 import { AuthService } from '../service/auth.service.js'
 import { LoginDTO } from '../dtos/login.dto.js'
+import { success, error } from '../utils/response.util.js'
 const authService = new AuthService()
 
 class AuthController {
@@ -7,17 +8,9 @@ class AuthController {
 		try {
 			const { username, email, password } = req.body
 			const user = await authService.register(username, email, password)
-
-			res.status(201).json({
-				status: 'ok',
-				code: 201,
-				data: user
-			})
+			success(res, user, 201)
 		} catch (err) {
-			res.status(400).json({
-				code: 400,
-				meesage: err
-			});
+			error(res, err, 400)
 		}
 	}
 
@@ -26,17 +19,9 @@ class AuthController {
 			const { email, password } = req.body
 
 			const user = await authService.login(email, password)
-
-			res.status(200).json({
-				status: 'ok',
-				code: 200,
-				data: user
-			})
+			success(res, user, 200)
 		} catch(err) {
-			res.status(400).json({
-				code: 400,
-				meesage: err
-			});
+			error(res, err, 400)
 		}
 	}
 
@@ -44,33 +29,19 @@ class AuthController {
 		try {
 			const rotated = await authService.refreshToken(req.body)
 
-			res.status(200).json({
-				status: 'ok',
-				code: 200,
-				data: rotated
-			})
+			success(res, user, 200)
 
 		} catch (err) {
-			res.status(400).json({
-				code: 400,
-				meesage: err
-			});
+			error(res, err, 400)
 		}
 	}
 
 	async logout (req, res) {
 		try {
 			await authService.logout(req.body)
-			res.status(200).json({
-				status: 'ok',
-				code: 200,
-				meesage: 'logout success'
-			})
+			success(res, user, 200)
 		} catch (err) {
-			res.status(400).json({
-				code: 400,
-				meesage: err
-			});
+			error(res, err, 400)
 		}
 	}
 }

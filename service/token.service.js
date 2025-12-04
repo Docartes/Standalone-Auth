@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken';
-import { pool } from '../models/token.model.js';
+import { pool } from '../config/db.js';
+import { signAccessToken, verifyAccessToken } from '../utils/jwt.util.js';
 import crypto from 'crypto';
 
 
 class TokenService {
 	generateAcessToken(user) {
-		return jwt.sign({
+		return signAccessToken({
 			id: user.rows[0].id,
-			role: user.rows[0].role
-		}, process.env.TOKEN_SECRET, {expiresIn: '15'})
+			role: user.rows[0].role})
 	}
 
 	async generateRefreshToken (user) {
