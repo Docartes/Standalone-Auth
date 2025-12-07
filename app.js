@@ -21,3 +21,7 @@ app.use('/auth', router)
 app.listen(port, () => {
 	console.log(`App listening on ${port}`)
 })
+
+export {
+	app
+}

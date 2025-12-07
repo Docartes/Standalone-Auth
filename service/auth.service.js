@@ -9,20 +9,22 @@ import { hash, comparedPassword } from '../utils/password.util.js';
 class AuthService {
 	async register(username, email, password) {
 		const validation = new RegisterDTO(username, email, password);
-		const exist = await pool.query(`SELECT * FROM users WHERE email = ${email}`);
+		const exist = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
 		if ( exist.rows[0] ) throw Error(`email already register`);
 
 		const hashPassword = await hash(password);
 
-		const user = await pool.query(`INSERT INTO users (username, email, password) VALUES(${username}, ${email}, ${hashPassword})`);
+		await pool.query(`INSERT INTO users (username, email, password) VALUES($1, $2, $3)`, [username, email, hashPassword]);
+
+		const user = await pool.query(`SELECT * FROM users WHERE username = $1`, [username])
 
 		const response = new UserDTO(user.rows[0])
 		return response
 	}
 
 	async login (email, password) {
-		const user = await pool.query(`SELECT * FROM users WHERE email = ${email}`)
+		const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
 
 		if ( user.rowCount <= 0 ) throw Error(`invalid credentials`)
 
@@ -43,7 +45,7 @@ class AuthService {
 
 		if ( !saved ) throw Error(`Invalid credentials`);
 
-		const user = await pool.query(`SELECT * FROM users WHERE id = ${saved.rows[0].userId}`);
+		const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [saved.rows[0].userId]);
 
 		if ( user.rowCount <= 0 ) throw Error(`User not found`);
 
