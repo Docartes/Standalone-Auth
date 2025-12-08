@@ -24,23 +24,22 @@ class TokenService {
 	}
 
 	async rotateRefreshToken(oldToken) {
-		const saved = await pool.query(`SELECT * FROM refreshToken WHERE token = $1`, [oldToken])
+		const saved = await pool.query(`SELECT * FROM refreshtoken WHERE token = $1`, [oldToken])
+		const userId = saved.rows[0].userid;
 
-		if ( saved.rowCount <= 0 ) {
-			return null
-		}
-
-		await pool.query(`DELETE FROM refreshToken WHERE token = $1`, [oldToken]);
+		// if ( saved.rowCount <= 0 ) {
+		// 	return null
+		// }
 
 		const token = await crypto.randomBytes(40).toString('hex');
 
-		const userId = saved.rows[0].id;
 		const expiresDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
 
-		await pool.query(`INSERT INTO refreshToken (userId, token) VALUES($1, $2, $3)`, [userId, token, expiresDate]);
+		await pool.query(`INSERT INTO refreshToken (userid, token, expiresat) VALUES($1, $2, $3)`, [userId, token, expiresDate]);
 
+		await pool.query(`DELETE FROM refreshToken WHERE userId = $1`, [userId]);
 
-		return { userId: saved.rows[0].userId, newToken: token }
+		return { userId, newToken: token }
 	}
 
 	async revokeRefreshToken(token) {

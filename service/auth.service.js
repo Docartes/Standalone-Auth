@@ -32,7 +32,7 @@ class AuthService {
 
 		if ( !match ) throw Error(`invalid credentials`);
 		const tokenService = new TokenService()
-		const accesToken = tokenService.generateAcessToken(user)
+		const accesToken = await tokenService.generateAcessToken(user)
 		const refreshToken = await tokenService.generateRefreshToken(user);
 
 		const response = new TokenDTO(user, accesToken, refreshToken) 
@@ -45,11 +45,11 @@ class AuthService {
 
 		if ( !saved ) throw Error(`Invalid credentials`);
 
-		const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [saved.rows[0].userId]);
+		const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [saved.userId]);
 
 		if ( user.rowCount <= 0 ) throw Error(`User not found`);
 
-		const acessToken = tokenService.generateAcessToken(user);
+		const acessToken = await tokenService.generateAcessToken(user);
 
 		return {
 			acessToken,

@@ -22,4 +22,22 @@ describe('Auth Service Test', () => {
 		expect(user.accessToken).toBeDefined();
 		expect(user.refreshToken).toBeDefined();
 	})
+
+	it(`Refresh an old token to a new token`, async() => {
+		const user = await service.login('husain@mail.com', 'husain123');
+		const newToken = await service.refreshToken(user.refreshToken);		
+
+
+		expect(user.refreshToken).toBeDefined();
+		expect(newToken.acessToken).toBeDefined();
+		expect(newToken.refreshToken).not.toEqual(user.refreshToken)
+	})
+
+	it(`Logout a user`, async() => {
+		const user = await service.login('husain@mail.com', 'husain123');
+		const logout = await service.logout(user.refreshToken)
+
+		expect(user.refreshToken).toBeDefined();
+		expect(logout).toBeUndefined();
+	})
 });

@@ -4,7 +4,7 @@ const tokenModel = `CREATE TABLE IF NOT EXISTS refreshToken (
 	userId INT NOT NULL,
 	token TEXT NOT NULL,
 	expiresAt TIMESTAMPTZ NOT NULL,
-	FOREIGN KEY (userID) REFERENCES users(id)
+	FOREIGN KEY (userId) REFERENCES users(id)
 );`
 
 const tokensTable = await pool.query(tokenModel)
