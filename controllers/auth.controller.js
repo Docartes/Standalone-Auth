@@ -27,9 +27,10 @@ class AuthController {
 
 	async refreshToken(req, res) {
 		try {
-			const rotated = await authService.refreshToken(req.body)
+			const {token} = req.body 
+			const rotated = await authService.refreshToken(token)
 
-			success(res, user, 200)
+			success(res, rotated, 200)
 
 		} catch (err) {
 			error(res, err, 400)
