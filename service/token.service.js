@@ -27,9 +27,9 @@ class TokenService {
 		const saved = await pool.query(`SELECT * FROM refreshtoken WHERE token = $1`, [oldToken])
 		const userId = saved.rows[0].userid;
 
-		// if ( saved.rowCount <= 0 ) {
-		// 	return null
-		// }
+		if ( saved.rowCount <= 0 ) {
+			return null
+		}
 
 		const token = await crypto.randomBytes(40).toString('hex');
 
